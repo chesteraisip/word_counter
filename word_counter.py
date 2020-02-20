@@ -3,43 +3,46 @@ import sys
 class WordCounter(object):
 	def __init__(self, text):
 		self._text = text.split()
-		self._frequencies = _get_frequencies(self._text)
+		self._get_frequencies()
 
-	def _get_frequencies(txt):
-		freqs = {}
-		existing = []
+	def _get_frequencies(self):
+		self._frequencies = {}
+		txt = self._text
 		txt.sort()
 		c = 0
-		current_word = ""
-		for i in xrange(len(txt)):
-			if current_word != txt[i]:
-				_add_word(freqs, existing, c, current_word)
+		current_word = txt[0]
+		for word in txt:
+			if current_word != word:
+				existing = self._add_word(c, current_word)
+				current_word = word
 				c = 1
 			else:
 				c += 1
-		_add_word(freqs, existing, c, current_word)
-		return freqs
+		self._add_word(c, current_word)
 
-	def _add_word(freqs, existing, c, current_word):
-		if c not in existing:
-			freqs[c] = [current_word]
+	def _add_word(self, c, current_word):
+		if c in self._frequencies.keys():
+			self._frequencies[c].append(current_word)
 		else:
-			freqs[c].append(current_word)
+			self._frequencies[c] = [current_word]
 
 	def get_count(self):
 		return len(self._text)
 
-	def get_most_frequent(self, num=10):
+	def get_most_frequent(self, max_words=10):
 		word_list = []
-		count_list = self._frequencies.keys()
+		count_list = [*self._frequencies]
 		count_list.sort(reverse=True)
 		for n in count_list:
-			word_list += self._frequencies[n]
-			if len(word_list) >= num:
-				return word[:num]
-		return word[:num]
+			word_list += [(w, n) for w in self._frequencies[n]]
+			if len(word_list) >= max_words:
+				return word_list[:max_words]
+		return word_list[:max_words]
 
 def main():
+	wc = WordCounter("The quick brown fox jumped over the lazy dog lol I have no idea why I did this")
+	print(wc.get_count())
+	print(wc.get_most_frequent())
 
 
 if __name__ == '__main__':
