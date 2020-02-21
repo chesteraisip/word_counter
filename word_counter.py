@@ -39,8 +39,11 @@ class WordCounter(object):
 				return word_list[:max_words]
 		return word_list[:max_words]
 
-def main():
-	wc = WordCounter("The quick brown fox jumped over the lazy dog lol I have no idea why I did this")
+def main(*args):
+	f = open(sys.argv[1])
+	fr = f.read()
+	wc = WordCounter(fr)
+	f.close()
 	print(wc.get_count())
 	print(wc.get_most_frequent())
 
