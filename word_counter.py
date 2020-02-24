@@ -7,6 +7,8 @@ class WordCounter(object):
 
 	def _get_frequencies(self):
 		self._frequencies = {}
+		if not len(self._text):
+			return
 		txt = self._text
 		txt.sort()
 		c = 0
@@ -30,23 +32,26 @@ class WordCounter(object):
 		return len(self._text)
 
 	def get_most_frequent(self, max_words=10):
-		word_list = []
+		word_list = {}
 		count_list = [*self._frequencies]
 		count_list.sort(reverse=True)
 		for n in count_list:
-			word_list += [(w, n) for w in self._frequencies[n]]
-			if len(word_list) >= max_words:
-				return word_list[:max_words]
-		return word_list[:max_words]
+			word_list.update({w:n for w in self._frequencies[n][:max_words - len(word_list.keys())]})
+			#word_list +=[ (w, n) for w in self._frequencies[n]]
+			if len(word_list.keys()) >= max_words:
+				return word_list
+		return word_list
 
 def main(*args):
-	f = open(sys.argv[1])
-	fr = f.read()
-	wc = WordCounter(fr)
-	f.close()
-	print(wc.get_count())
-	print(wc.get_most_frequent())
-
+	if len(sys.argv) > 1:
+		f = open(sys.argv[1])
+		fr = f.read()
+		wc = WordCounter(fr)
+		f.close()
+		print(wc.get_count())
+		print(wc.get_most_frequent())
+	else:
+		print("Usage: python word_counter.py myfile.txt")
 
 if __name__ == '__main__':
 	main()
