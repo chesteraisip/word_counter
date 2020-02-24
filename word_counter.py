@@ -2,10 +2,11 @@ import sys
 
 class WordCounter(object):
 	def __init__(self, text):
-		self._text = text.split()
+		self._text = text.lower().split()
 		self._get_frequencies()
 
 	def _get_frequencies(self):
+		# using this method to require 1 traversal through string to populate frequency dict
 		self._frequencies = {}
 		if not len(self._text):
 			return

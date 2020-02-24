@@ -9,17 +9,17 @@ class WordCounterTest(unittest.TestCase):
 		self.wc = WordCounter(self.fr)
 
 	def test_empty(self):
-		self.set_up("empty.txt")
+		self.set_up("samples/empty.txt")
 		self.assertEqual(self.wc.get_count(), 0)
 		self.assertEqual(self.wc.get_most_frequent(), {})
 
 	def test_base(self):
-		self.set_up("test.txt")
+		self.set_up("samples/test.txt")
 		self.assertEqual(self.wc.get_count(), 9)
-		self.assertEqual(len(self.wc.get_most_frequent().keys()), 9)
+		self.assertEqual(len(self.wc.get_most_frequent().keys()), 8)
 
 	def test_long(self):
-		self.set_up("long.txt")
+		self.set_up("samples/long.txt")
 		self.assertEqual(self.wc.get_count(), 188)
 		self.assertEqual(len(self.wc.get_most_frequent().keys()), 10)
 
